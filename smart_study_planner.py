@@ -193,3 +193,66 @@ def study_statistics():
         f"{longest_record['topic'].title()} "
         f"({longest_record['duration']:g} minutes)"
     )
+
+def save_sessions():
+    try:
+        with open(LOG_FILE, "w", encoding="utf-8") as file:
+            for record in study_records:
+                subject = record["subject"].replace(";", ",")
+                topic = record["topic"].replace(";", ",")
+                study_date = record["date"].replace(";", ",")
+                duration = record["duration"]
+
+                file.write(
+                    f"{subject};{topic};{study_date};{duration}\n"
+                )
+
+        print(f"{len(study_records)} study record(s) saved.")
+
+    except OSError:
+        print("The study records could not be saved.")
+
+def load_sessions():
+    study_records.clear()
+    loaded_records = 0
+
+    try:
+        with open(LOG_FILE, "r", encoding="utf-8") as file:
+            for line in file:
+                line = line.strip()
+
+                if line == "":
+                    continue
+
+                details = line.split(";")
+
+                if len(details) != 4:
+                    continue
+
+                subject = details[0]
+                topic = details[1]
+                study_date = details[2]
+
+                try:
+                    duration = float(details[3])
+                except ValueError:
+                    continue
+
+                record = {
+                    "subject": subject,
+                    "topic": topic,
+                    "date": study_date,
+                    "duration": duration
+                }
+
+                study_records.append(record)
+                loaded_records += 1
+
+        print(f"{loaded_records} saved record(s) loaded.")
+
+    except FileNotFoundError:
+        print("No previous study log exists. Starting with an empty planner.")
+
+    except OSError:
+        print("The study log could not be opened.")
+
