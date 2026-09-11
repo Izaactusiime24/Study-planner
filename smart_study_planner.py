@@ -129,3 +129,67 @@ def search_by_subject(subject):
     print(f"Total minutes: {total_minutes:g}")
     print(f"Total hours: {total_minutes / 60:.2f}")
 
+def study_statistics():
+    print("\n***** STUDY ACTIVITY SUMMARY *****")
+
+    if not study_records:
+        print("No statistics can be calculated without study sessions.")
+        return
+
+    subject_totals = {}
+    display_names = {}
+    total_minutes = 0
+
+    for record in study_records:
+        subject_key = record["subject"].strip().casefold()
+
+        display_names[subject_key] = record["subject"].title()
+
+        subject_totals[subject_key] = (
+            subject_totals.get(subject_key, 0)
+            + record["duration"]
+        )
+
+        total_minutes += record["duration"]
+
+    weakest_key = min(
+        subject_totals,
+        key=subject_totals.get
+    )
+
+    longest_record = max(
+        study_records,
+        key=lambda record: record["duration"]
+    )
+
+    print(f"Total sessions: {len(study_records)}")
+    print(f"Total study time: {total_minutes:g} minutes")
+    print(f"Total study hours: {total_minutes / 60:.2f} hours")
+
+    print("\nTime spent on each subject:")
+
+    for subject_key, minutes in subject_totals.items():
+        subject_name = display_names[subject_key]
+
+        print(
+            f"* {subject_name}: "
+            f"{minutes:g} minutes "
+            f"or {minutes / 60:.2f} hours"
+        )
+
+    weakest_minutes = subject_totals[weakest_key]
+
+    print("\nStudy observations:")
+
+    print(
+        f"Subject needing more attention: "
+        f"{display_names[weakest_key]} "
+        f"({weakest_minutes:g} minutes)"
+    )
+
+    print(
+        f"Longest study session: "
+        f"{longest_record['subject'].title()} - "
+        f"{longest_record['topic'].title()} "
+        f"({longest_record['duration']:g} minutes)"
+    )
