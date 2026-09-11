@@ -96,3 +96,36 @@ def view_sessions():
     print(border)
     print(f"Number of sessions: {len(study_records)}")
 
+def search_by_subject(subject):
+    matching_records = []
+    searched_subject = subject.strip().casefold()
+
+    for record in study_records:
+        recorded_subject = record["subject"].strip().casefold()
+
+        if recorded_subject == searched_subject:
+            matching_records.append(record)
+
+    print(f"\n***** SEARCH: {subject.upper()} *****")
+
+    if not matching_records:
+        print("No study session matches that subject.")
+        return
+
+    total_minutes = 0
+
+    for number, record in enumerate(matching_records, start=1):
+        total_minutes += record["duration"]
+        session_type = classify_session(record["duration"])
+
+        print(f"\nResult {number}")
+        print(f"Topic: {record['topic']}")
+        print(f"Date/Day: {record['date']}")
+        print(f"Duration: {record['duration']:g} minutes")
+        print(f"Session type: {session_type}")
+
+    print("\nSearch summary")
+    print(f"Sessions found: {len(matching_records)}")
+    print(f"Total minutes: {total_minutes:g}")
+    print(f"Total hours: {total_minutes / 60:.2f}")
+
