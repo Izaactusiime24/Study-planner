@@ -256,3 +256,53 @@ def load_sessions():
     except OSError:
         print("The study log could not be opened.")
 
+def show_menu():
+    print("\n" + "#" * 50)
+    print("          SMART STUDY PLANNER")
+    print("#" * 50)
+    print("1 - Record a new study session")
+    print("2 - Show all study sessions")
+    print("3 - Find sessions for a subject")
+    print("4 - Show study activity summary")
+    print("5 - Save information and close")
+    print("#" * 50)
+
+def main():
+    load_sessions()
+
+    program_running = True
+
+    while program_running:
+        show_menu()
+
+        choice = input("Select an action (1-5): ").strip()
+
+        if choice == "1":
+            add_session()
+
+        elif choice == "2":
+            view_sessions()
+
+        elif choice == "3":
+            subject = input(
+                "Which subject would you like to find? "
+            ).strip()
+
+            search_by_subject(subject)
+
+        elif choice == "4":
+            study_statistics()
+
+        elif choice == "5":
+            save_sessions()
+            print("Study information saved. Program closed.")
+            program_running = False
+
+        else:
+            print(
+                "Unknown menu option. "
+                "Please choose a number between 1 and 5."
+            )
+
+if __name__ == "__main__":
+    main()

@@ -1,2 +1,4 @@
 Physics;Pivots;Monday;20.0
 Introduction to ICT;Excel files;Wednesday;40.0
+CRE;Getting and maintaining a job;Thursday;40.0
+Fundamentals of programing;Python;Monday;120.0
